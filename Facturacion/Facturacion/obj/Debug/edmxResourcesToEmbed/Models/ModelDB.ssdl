@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TiendaModels.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="CLIENTE">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="nchar" MaxLength="50" Nullable="false" />
+    <Property Name="apellido" Type="nchar" MaxLength="50" Nullable="false" />
+    <Property Name="nit" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="telefono" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="direccion" Type="nchar" MaxLength="150" Nullable="false" />
+    <Property Name="correo" Type="nchar" MaxLength="50" Nullable="false" />
+    <Property Name="estado" Type="int" />
+  </EntityType>
+  <EntityType Name="PRODUCTO">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="nchar" MaxLength="50" Nullable="false" />
+    <Property Name="descripcion" Type="nchar" MaxLength="150" Nullable="false" />
+    <Property Name="idProveedor" Type="int" Nullable="false" />
+    <Property Name="precioDeCompra" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="precioDeVenta" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="cantidad" Type="int" Nullable="false" />
+    <Property Name="estado" Type="int" />
+  </EntityType>
+  <EntityType Name="PROVEEDOR">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="nchar" MaxLength="50" Nullable="false" />
+    <Property Name="nit" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="telefono" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="direccion" Type="nchar" MaxLength="150" Nullable="false" />
+    <Property Name="correo" Type="nchar" MaxLength="50" Nullable="false" />
+    <Property Name="estado" Type="int" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="VENTA">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="numeroFactura" Type="nchar" MaxLength="50" Nullable="false" />
+    <Property Name="serie" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="numeroDTE" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="idCliente" Type="int" Nullable="false" />
+    <Property Name="fecha" Type="date" />
+    <Property Name="precioTotal" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="estado" Type="int" />
+  </EntityType>
+  <EntityType Name="VENTADETALLE">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idVenta" Type="int" Nullable="false" />
+    <Property Name="idProducto" Type="int" Nullable="false" />
+    <Property Name="cantidad" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="precio" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="subTotal" Type="decimal" Precision="37" Scale="4" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <Association Name="FK__PRODUCTO__idProv__276EDEB3">
+    <End Role="PROVEEDOR" Type="Self.PROVEEDOR" Multiplicity="1" />
+    <End Role="PRODUCTO" Type="Self.PRODUCTO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PROVEEDOR">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="PRODUCTO">
+        <PropertyRef Name="idProveedor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__VENTA__idCliente__2E1BDC42">
+    <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="1" />
+    <End Role="VENTA" Type="Self.VENTA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CLIENTE">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="VENTA">
+        <PropertyRef Name="idCliente" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__VENTADETA__idPro__33D4B598">
+    <End Role="PRODUCTO" Type="Self.PRODUCTO" Multiplicity="1" />
+    <End Role="VENTADETALLE" Type="Self.VENTADETALLE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PRODUCTO">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="VENTADETALLE">
+        <PropertyRef Name="idProducto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__VENTADETA__idVen__32E0915F">
+    <End Role="VENTA" Type="Self.VENTA" Multiplicity="1" />
+    <End Role="VENTADETALLE" Type="Self.VENTADETALLE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VENTA">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="VENTADETALLE">
+        <PropertyRef Name="idVenta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="TiendaModelsStoreContainer">
+    <EntitySet Name="CLIENTE" EntityType="Self.CLIENTE" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PRODUCTO" EntityType="Self.PRODUCTO" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PROVEEDOR" EntityType="Self.PROVEEDOR" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VENTA" EntityType="Self.VENTA" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VENTADETALLE" EntityType="Self.VENTADETALLE" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__PRODUCTO__idProv__276EDEB3" Association="Self.FK__PRODUCTO__idProv__276EDEB3">
+      <End Role="PROVEEDOR" EntitySet="PROVEEDOR" />
+      <End Role="PRODUCTO" EntitySet="PRODUCTO" />
+    </AssociationSet>
+    <AssociationSet Name="FK__VENTA__idCliente__2E1BDC42" Association="Self.FK__VENTA__idCliente__2E1BDC42">
+      <End Role="CLIENTE" EntitySet="CLIENTE" />
+      <End Role="VENTA" EntitySet="VENTA" />
+    </AssociationSet>
+    <AssociationSet Name="FK__VENTADETA__idPro__33D4B598" Association="Self.FK__VENTADETA__idPro__33D4B598">
+      <End Role="PRODUCTO" EntitySet="PRODUCTO" />
+      <End Role="VENTADETALLE" EntitySet="VENTADETALLE" />
+    </AssociationSet>
+    <AssociationSet Name="FK__VENTADETA__idVen__32E0915F" Association="Self.FK__VENTADETA__idVen__32E0915F">
+      <End Role="VENTA" EntitySet="VENTA" />
+      <End Role="VENTADETALLE" EntitySet="VENTADETALLE" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,116 @@
+﻿@model Facturacion.Models.VENTA
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Venta</h2>
+
+<style type="text/css" media="print">
+    @@media print {
+        #EliminaFila, #Agregar, #Imprimir, #Buscar {
+            display: none;
+        }
+    }
+</style>
+
+<div class="row">
+    <div class="col card">
+        @using (Html.BeginForm("Create", "Venta", FormMethod.Post, new { @id = "formCreateVenta" }))
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-row">
+                <div class="form-group col-md-8">
+                    <div class="col-md-10">
+                        <br />
+                        <h4>Factura</h4>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <div class="col-md-10">
+                        <label class="control-label">Fecha</label>
+                        @Html.EditorFor(model => model.fecha, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.fecha, @disabled = "disabled", @id = "fecha" } })
+                        @Html.ValidationMessageFor(model => model.fecha, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <div class="col-md-10">
+                        <label class="control-label">Numero De Factura</label>
+                        @Html.EditorFor(model => model.numeroFactura, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.numeroFactura, @disabled = "disabled", @id = "numeroFactura" } })
+                        @Html.ValidationMessageFor(model => model.numeroFactura, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <div class="col-md-10">
+                        <label class="control-label">Serie</label>
+                        @Html.EditorFor(model => model.serie, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.serie, @disabled = "disabled", @id = "Serie" } })
+                        @Html.ValidationMessageFor(model => model.serie, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group  col-md-4">
+                    <div class="col-md-10">
+                        <label class="control-label">Numero DTE</label>
+                        @Html.EditorFor(model => model.numeroDTE, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.numeroDTE, @disabled = "disabled", @id = "numeroDTE" } })
+                        @Html.ValidationMessageFor(model => model.numeroDTE, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @Html.HiddenFor(model => model.idCliente, new { @id = "idCliente", })
+                @Html.HiddenFor(model => model.precioTotal, new { @id = "precioTotal", @Value = 1 })
+            </div>
+        }
+    </div>
+</div>
+
+<div class="row">
+    <div class="col card">
+        <br />
+        @Html.Partial("~/Views/Venta/PartialViews/_Cliente.cshtml")
+    </div>
+    <div class="col card">
+        <br />
+        @Html.Partial("~/Views/Venta/PartialViews/_VentaDetalle.cshtml", new ViewDataDictionary { { "IdProducto", ViewBag.IdProducto } })
+    </div>
+</div>
+
+<br />
+<div role="alert" id="ErrorMensaje">
+
+</div>
+<br />
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Producto</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Subtotal</th>
+            <th scope="col">Accion</th>
+        </tr>
+    </thead>
+    <tbody id="tablaBody">
+
+    </tbody>
+</table>
+
+<br />
+<hr />
+<div class="row">
+    <div class="col">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Imprimir" onclick="print()" class="btn btn-outline-primary" id="Imprimir" />
+        </div>
+    </div>
+    <div class="col">
+        <div class="col-md-offset-2 col-md-10">
+            <label>Total</label>
+            <input type="text" class="form-control" id="TotalCompra" disabled />
+        </div>
+    </div>
+</div>
